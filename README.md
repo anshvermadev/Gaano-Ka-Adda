@@ -6,8 +6,9 @@
 
 ## 🌟 Experience Modules
 
-- **Phase 1: ट्रैक्टर वाला (Tractor Waala)** - 90s Indian Village Nostalgia with authentic retro radio player, scenic rural background visuals, ambient atmospheric effects, interactive sound easter eggs, and active listeners heartbeat counter.
-- **Future Phases**: Additional themed hangouts (Train Journeys, Monsoon Terraces, Chai Dhaba, Late Night Drives, 2000s College Romance, Gen-Z Lo-Fi).
+- **Phase 1: ट्रैक्टर वाला (Tractor Waala - `/`)** - 90s Indian Village Nostalgia with authentic retro radio player, scenic rural background visuals, ambient atmospheric effects, interactive sound easter eggs, and active listeners heartbeat counter.
+- **Phase 2: सदाबहार 2000s (Bollywood Romance - `/2000s`)** - 69 iconic Bollywood romantic classics from 90s to 2000s (DDLJ, KKHH, Mohabbatein, Fanaa, Veer-Zaara, Jab We Met, KHNH) with smooth playlist search and auto-scroll.
+- **Future Phases**: Additional themed hangouts (Train Journeys, Monsoon Terraces, Chai Dhaba, Late Night Drives, Gen-Z Lo-Fi).
 
 ---
 
@@ -33,12 +34,11 @@ npm install
 ```bash
 npm run dev
 ```
-Open [http://localhost:3000](http://localhost:3000) in your browser.
+- 90s Village Nostalgia: [http://localhost:3000](http://localhost:3000)
+- 90s-2000s Romance: [http://localhost:3000/2000s](http://localhost:3000/2000s)
 
 ### 3. Production Build
 ```bash
 npm run build
 npm start
 ```
-
----

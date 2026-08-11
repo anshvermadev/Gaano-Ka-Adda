@@ -37,6 +37,29 @@ export default function YouTubePlayerController({
     isPlayingRef.current = isPlaying;
   }, [videoId, isPlaying]);
 
+  // Background playback & tab switch persistence
+  useEffect(() => {
+    const handleVisibilityChange = () => {
+      if (document.hidden && isPlayingRef.current && playerRef.current) {
+        try {
+          if (typeof playerRef.current.getPlayerState === 'function') {
+            const state = playerRef.current.getPlayerState();
+            if (state !== window.YT?.PlayerState?.PLAYING) {
+              playerRef.current.playVideo();
+            }
+          }
+        } catch (e) {}
+      }
+    };
+
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+    window.addEventListener('blur', handleVisibilityChange);
+    return () => {
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
+      window.removeEventListener('blur', handleVisibilityChange);
+    };
+  }, []);
+
   useEffect(() => {
     if (typeof window === 'undefined') return;
 
@@ -78,6 +101,13 @@ export default function YouTubePlayerController({
               if (onPlayerReady) onPlayerReady(event.target);
             },
             onStateChange: (event: any) => {
+              // If browser auto-paused due to tab hiding but user wants playing, resume
+              if (event.data === 2 && document.hidden && isPlayingRef.current) {
+                try {
+                  event.target.playVideo();
+                } catch (e) {}
+                return;
+              }
               if (onStateChange) onStateChange(event.data, event.target);
             },
             onError: (event: any) => {
@@ -161,7 +191,7 @@ export default function YouTubePlayerController({
 
   return (
     <div
-      className="fixed bottom-0 right-0 w-24 h-16 pointer-events-none opacity-0 z-[-1] overflow-hidden"
+      className="fixed bottom-0 right-0 w-[120px] h-[80px] pointer-events-none opacity-[0.001] z-10 overflow-hidden"
       aria-hidden="true"
     >
       <div id="yt-player-instance" className="w-full h-full" />

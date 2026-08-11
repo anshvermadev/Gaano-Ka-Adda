@@ -7,6 +7,7 @@ import AudioPlayer, { RepeatMode } from '../components/AudioPlayer';
 import PlaylistDrawer from '../components/PlaylistDrawer';
 import YouTubePlayerController from '../components/YouTubePlayerController';
 import AmbientAtmosphere from '../components/AmbientAtmosphere';
+import { useBackgroundAudio } from '../hooks/useBackgroundAudio';
 import { SONGS, Song } from '../data/songs';
 
 export default function Home(): React.JSX.Element {
@@ -93,78 +94,17 @@ export default function Home(): React.JSX.Element {
     }
   };
 
-  useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
-      const target = e.target as HTMLElement;
-      if (target && (target.tagName === 'INPUT' || target.tagName === 'TEXTAREA')) return;
-      if (e.key === 't' || e.key === 'T') {
-        triggerTractorEngine();
-      } else if (e.code === 'Space') {
-        e.preventDefault();
-        togglePlay();
-      }
-    };
-    window.addEventListener('keydown', handleKeyDown);
-    return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [isPlaying]);
-
-  const handleYTPlayerReady = useCallback((player: any) => {
-    ytPlayerRef.current = player;
-  }, []);
-
-  const handleYTStateChange = useCallback((stateCode: number) => {
-    if (stateCode === 1) {
-      setIsPlaying(true);
-    } else if (stateCode === 2) {
-      setIsPlaying(false);
-    } else if (stateCode === 0) {
-      if (repeatModeRef.current === 'one') {
-        if (ytPlayerRef.current && typeof ytPlayerRef.current.seekTo === 'function') {
-          ytPlayerRef.current.seekTo(0, true);
-          ytPlayerRef.current.playVideo();
-        }
-        setIsPlaying(true);
-      } else if (isShuffleRef.current) {
-        const nextIdx = getRandomIndex(currentIndexRef.current);
-        setCurrentIndex(nextIdx);
-        setIsPlaying(true);
-        if (ytPlayerRef.current && typeof ytPlayerRef.current.loadVideoById === 'function') {
-          ytPlayerRef.current.loadVideoById(SONGS[nextIdx].videoId);
-        }
-      } else {
-        const nextIdx = (currentIndexRef.current + 1) % SONGS.length;
-        setCurrentIndex(nextIdx);
-        setIsPlaying(true);
-        if (ytPlayerRef.current && typeof ytPlayerRef.current.loadVideoById === 'function') {
-          ytPlayerRef.current.loadVideoById(SONGS[nextIdx].videoId);
-        }
-      }
-    }
-  }, []);
-
-  const handleYTTimeUpdate = useCallback((current: number, dur: number) => {
-    setCurrentTime(current);
-    if (dur > 0) setDuration(dur);
-  }, []);
-
-  const handleYTError = useCallback((errorCode: number) => {
-    console.warn('Skipping unplayable track, YT error code:', errorCode);
-    const nextIdx = isShuffleRef.current
-      ? getRandomIndex(currentIndexRef.current)
-      : (currentIndexRef.current + 1) % SONGS.length;
-    setCurrentIndex(nextIdx);
-  }, []);
-
   const togglePlay = () => {
     initAudioContext();
-    if (!ytPlayerRef.current) return;
+    if (!ytPlayerRef.current) {
+      setIsPlaying(!isPlaying);
+      return;
+    }
     try {
       if (isPlaying) {
         ytPlayerRef.current.pauseVideo();
-        setIsPlaying(false);
       } else {
         ytPlayerRef.current.playVideo();
-        setIsPlaying(true);
       }
     } catch (e) {
       console.warn('Play/Pause error:', e);
@@ -218,6 +158,75 @@ export default function Home(): React.JSX.Element {
     }
   };
 
+  // Background Audio Hook for continuous lock-screen / tab-switch audio
+  useBackgroundAudio({
+    isPlaying,
+    currentSong,
+    onPlay: togglePlay,
+    onPause: togglePlay,
+    onNext: handleNext,
+    onPrevious: handlePrevious,
+    onSeek: handleSeek,
+  });
+
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      const target = e.target as HTMLElement;
+      if (target && (target.tagName === 'INPUT' || target.tagName === 'TEXTAREA')) return;
+      if (e.key === 't' || e.key === 'T') {
+        triggerTractorEngine();
+      } else if (e.code === 'Space') {
+        e.preventDefault();
+        togglePlay();
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [isPlaying]);
+
+  const handleYTPlayerReady = useCallback((player: any) => {
+    ytPlayerRef.current = player;
+  }, []);
+
+  const handleYTStateChange = useCallback((stateCode: number) => {
+    if (stateCode === 1) {
+      setIsPlaying(true);
+    } else if (stateCode === 2) {
+      setIsPlaying(false);
+    } else if (stateCode === 0) {
+      handleSongEnded();
+    }
+  }, []);
+
+  const handleYTTimeUpdate = useCallback((current: number, dur: number) => {
+    setCurrentTime(current);
+    if (dur && dur > 0) {
+      setDuration(dur);
+    }
+  }, []);
+
+  const handleYTError = useCallback((errorCode: number) => {
+    console.warn('Playback error encountered:', errorCode);
+  }, []);
+
+  const handleSongEnded = () => {
+    const currentMode = repeatModeRef.current;
+    if (currentMode === 'one') {
+      if (ytPlayerRef.current && typeof ytPlayerRef.current.seekTo === 'function') {
+        ytPlayerRef.current.seekTo(0);
+        ytPlayerRef.current.playVideo();
+      }
+    } else if (currentMode === 'all') {
+      handleNext();
+    } else {
+      if (currentIndexRef.current === SONGS.length - 1) {
+        setIsPlaying(false);
+      } else {
+        handleNext();
+      }
+    }
+  };
+
   const handleSelectSong = (index: number) => {
     initAudioContext();
     setCurrentIndex(index);
@@ -243,7 +252,7 @@ export default function Home(): React.JSX.Element {
         onError={handleYTError}
       />
 
-      <Header />
+      <Header currentEra="90s" />
 
       <HeroBanner
         onTractorClick={triggerTractorEngine}
@@ -261,11 +270,13 @@ export default function Home(): React.JSX.Element {
         onSeek={handleSeek}
         onOpenPlaylist={() => setIsPlaylistOpen(true)}
         isShuffle={isShuffle}
-        toggleShuffle={() => setIsShuffle((prev) => !prev)}
+        toggleShuffle={() => setIsShuffle(!isShuffle)}
         repeatMode={repeatMode}
-        toggleRepeat={() =>
-          setRepeatMode((prev) => (prev === 'off' ? 'all' : prev === 'all' ? 'one' : 'off'))
-        }
+        toggleRepeat={() => {
+          if (repeatMode === 'all') setRepeatMode('one');
+          else if (repeatMode === 'one') setRepeatMode('off');
+          else setRepeatMode('all');
+        }}
       />
 
       <PlaylistDrawer
@@ -274,14 +285,10 @@ export default function Home(): React.JSX.Element {
         currentIndex={currentIndex}
         onSelectSong={handleSelectSong}
         isPlaying={isPlaying}
+        songs={SONGS}
+        title="ट्रैक्टर वाला Playlist"
+        ytMusicUrl="https://music.youtube.com/playlist?list=PL--o-tfjAs5J7M5M5obyQPpmFnPi1a_Ev"
       />
-
-      <div 
-        onClick={triggerTractorEngine}
-        className="fixed bottom-4 sm:bottom-6 left-4 sm:left-10 z-30 px-3.5 py-1.5 rounded-full bg-black/35 backdrop-blur-md border border-white/15 text-xs text-white/70 hover:text-white hover:bg-black/50 transition-all cursor-pointer hidden md:flex items-center gap-2"
-      >
-        <span>Click tractor or press <kbd className="px-1.5 py-0.5 text-[10px] font-mono bg-white/20 rounded">T</kbd> to rev engine</span>
-      </div>
     </main>
   );
 }

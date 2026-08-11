@@ -3,7 +3,7 @@
 import React, { useEffect, useRef } from 'react';
 
 interface AmbientAtmosphereProps {
-  isTractorRevving: boolean;
+  isTractorRevving?: boolean;
 }
 
 interface DustParticle {
@@ -24,31 +24,25 @@ interface Leaf {
   speedX: number;
   rotation: number;
   rotSpeed: number;
-  color: string;
 }
 
-interface Bird {
-  x: number;
-  y: number;
-  speed: number;
-  size: number;
-  wing: number;
-}
-
-interface SmokePuff {
+interface SmokeParticle {
   x: number;
   y: number;
   radius: number;
-  maxRadius: number;
   alpha: number;
-  speedY: number;
   speedX: number;
-  growth: number;
+  speedY: number;
 }
 
-export default function AmbientAtmosphere({ isTractorRevving }: AmbientAtmosphereProps): React.JSX.Element {
+export default function AmbientAtmosphere({ isTractorRevving = false }: AmbientAtmosphereProps): React.JSX.Element {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
-  const smokeCanvasRef = useRef<HTMLCanvasElement | null>(null);
+  const smokeRef = useRef<SmokeParticle[]>([]);
+  const isRevvingRef = useRef<boolean>(isTractorRevving);
+
+  useEffect(() => {
+    isRevvingRef.current = isTractorRevving;
+  }, [isTractorRevving]);
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -56,193 +50,151 @@ export default function AmbientAtmosphere({ isTractorRevving }: AmbientAtmospher
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
 
-    let width = canvas.width = window.innerWidth;
-    let height = canvas.height = window.innerHeight;
+    let animFrame: number;
+    let width = (canvas.width = window.innerWidth);
+    let height = (canvas.height = window.innerHeight);
 
     const handleResize = () => {
+      if (!canvas) return;
       width = canvas.width = window.innerWidth;
       height = canvas.height = window.innerHeight;
-      if (smokeCanvasRef.current) {
-        smokeCanvasRef.current.width = width;
-        smokeCanvasRef.current.height = height;
-      }
     };
     window.addEventListener('resize', handleResize);
 
+    // Dust particles
+    const dustCount = Math.min(width < 768 ? 25 : 55, 60);
     const dustParticles: DustParticle[] = [];
-    for (let i = 0; i < 35; i++) {
+    for (let i = 0; i < dustCount; i++) {
       dustParticles.push({
         x: Math.random() * width,
         y: Math.random() * height,
-        radius: Math.random() * 2 + 0.6,
-        alpha: Math.random() * 0.5 + 0.2,
-        speedX: Math.random() * 0.35 + 0.1,
-        speedY: (Math.random() - 0.5) * 0.2,
-        wobble: Math.random() * Math.PI * 2
+        radius: Math.random() * 1.5 + 0.6,
+        alpha: Math.random() * 0.4 + 0.15,
+        speedX: (Math.random() - 0.5) * 0.35 + 0.2,
+        speedY: (Math.random() - 0.5) * 0.2 - 0.15,
+        wobble: Math.random() * Math.PI * 2,
       });
     }
 
+    // Leaves / Petals
+    const leafCount = Math.min(width < 768 ? 4 : 8, 10);
     const leaves: Leaf[] = [];
-    for (let i = 0; i < 10; i++) {
+    for (let i = 0; i < leafCount; i++) {
       leaves.push({
-        x: Math.random() * (width * 0.6),
-        y: Math.random() * (height * 0.5),
-        size: Math.random() * 6 + 5,
+        x: Math.random() * width,
+        y: Math.random() * height,
+        size: Math.random() * 6 + 4,
         speedY: Math.random() * 0.6 + 0.3,
-        speedX: Math.random() * 0.5 + 0.2,
-        rotation: Math.random() * Math.PI * 2,
-        rotSpeed: (Math.random() - 0.5) * 0.02,
-        color: Math.random() > 0.4 ? 'rgba(92, 140, 42, 0.6)' : 'rgba(214, 160, 52, 0.6)'
+        speedX: Math.random() * 0.8 + 0.4,
+        rotation: Math.random() * 360,
+        rotSpeed: (Math.random() - 0.5) * 2,
       });
     }
 
-    const birds: Bird[] = [
-      { x: width * 0.7, y: height * 0.22, speed: 0.6, size: 4, wing: 0 },
-      { x: width * 0.74, y: height * 0.24, speed: 0.55, size: 3.5, wing: 0.5 }
-    ];
+    let lastSmokeTime = 0;
 
-    let animId: number;
-    const render = () => {
+    const render = (time: number) => {
       ctx.clearRect(0, 0, width, height);
 
-      // Draw dust
-      dustParticles.forEach(p => {
-        p.x += p.speedX;
-        p.y += Math.sin(p.wobble) * 0.25 + p.speedY;
-        p.wobble += 0.02;
+      // Render Dust Particles (Sunlight Dust motes)
+      for (const d of dustParticles) {
+        d.x += d.speedX;
+        d.y += d.speedY;
+        d.wobble += 0.02;
+        d.x += Math.sin(d.wobble) * 0.25;
 
-        if (p.x > width + 10) p.x = -10;
-        if (p.y > height + 10) p.y = -10;
-        if (p.y < -10) p.y = height + 10;
+        if (d.x > width + 10) d.x = -10;
+        if (d.x < -10) d.x = width + 10;
+        if (d.y > height + 10) d.y = -10;
+        if (d.y < -10) d.y = height + 10;
 
         ctx.beginPath();
-        ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(255, 235, 175, ${p.alpha})`;
+        ctx.arc(d.x, d.y, d.radius, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(255, 245, 200, ${d.alpha})`;
+        ctx.shadowBlur = 4;
+        ctx.shadowColor = 'rgba(255, 230, 150, 0.4)';
         ctx.fill();
-      });
+      }
 
-      // Draw leaves
-      leaves.forEach(l => {
-        l.x += l.speedX;
-        l.y += l.speedY;
-        l.rotation += l.rotSpeed;
+      // Render Floating Leaves / Petals
+      for (const leaf of leaves) {
+        leaf.y += leaf.speedY;
+        leaf.x += Math.sin(leaf.y * 0.01) * 0.8 + leaf.speedX;
+        leaf.rotation += leaf.rotSpeed;
 
-        if (l.y > height + 20 || l.x > width + 20) {
-          l.x = Math.random() * (width * 0.4) - 50;
-          l.y = -10;
+        if (leaf.y > height + 20) {
+          leaf.y = -20;
+          leaf.x = Math.random() * width;
+        }
+        if (leaf.x > width + 20) {
+          leaf.x = -20;
         }
 
         ctx.save();
-        ctx.translate(l.x, l.y);
-        ctx.rotate(l.rotation);
-        ctx.fillStyle = l.color;
+        ctx.translate(leaf.x, leaf.y);
+        ctx.rotate((leaf.rotation * Math.PI) / 180);
         ctx.beginPath();
-        ctx.ellipse(0, 0, l.size, l.size * 0.45, 0, 0, Math.PI * 2);
+        ctx.ellipse(0, 0, leaf.size, leaf.size * 0.45, 0, 0, Math.PI * 2);
+        ctx.fillStyle = 'rgba(165, 140, 75, 0.35)';
         ctx.fill();
         ctx.restore();
-      });
+      }
 
-      // Draw birds
-      birds.forEach(b => {
-        b.x -= b.speed;
-        b.wing += 0.05;
+      // Tractor Rev Exhaust Smoke Particles
+      if (isRevvingRef.current && time - lastSmokeTime > 70) {
+        lastSmokeTime = time;
+        // Exhaust pipe position on desktop vs mobile
+        const exhaustX = width > 768 ? width * 0.36 : width * 0.48;
+        const exhaustY = width > 768 ? height * 0.52 : height * 0.58;
 
-        if (b.x < -40) {
-          b.x = width + 50;
-          b.y = Math.random() * (height * 0.25) + (height * 0.12);
+        for (let i = 0; i < 3; i++) {
+          smokeRef.current.push({
+            x: exhaustX + (Math.random() - 0.5) * 12,
+            y: exhaustY + (Math.random() - 0.5) * 8,
+            radius: Math.random() * 8 + 6,
+            alpha: 0.75,
+            speedX: (Math.random() - 0.5) * 2.5 - 1.5,
+            speedY: -(Math.random() * 3 + 2.5),
+          });
         }
+      }
 
-        const wingY = Math.sin(b.wing) * (b.size * 0.5);
-        ctx.strokeStyle = 'rgba(40, 50, 35, 0.4)';
-        ctx.lineWidth = 1.2;
-        ctx.beginPath();
-        ctx.moveTo(b.x - b.size, b.y + wingY);
-        ctx.quadraticCurveTo(b.x - b.size * 0.3, b.y - b.size * 0.6, b.x, b.y);
-        ctx.quadraticCurveTo(b.x + b.size * 0.3, b.y - b.size * 0.6, b.x + b.size, b.y + wingY);
-        ctx.stroke();
-      });
+      // Update & Draw Smoke
+      for (let i = smokeRef.current.length - 1; i >= 0; i--) {
+        const s = smokeRef.current[i];
+        s.x += s.speedX;
+        s.y += s.speedY;
+        s.radius += 0.85;
+        s.alpha -= 0.016;
 
-      animId = requestAnimationFrame(render);
-    };
-
-    render();
-
-    return () => {
-      window.removeEventListener('resize', handleResize);
-      cancelAnimationFrame(animId);
-    };
-  }, []);
-
-  // Tractor smoke bursts
-  useEffect(() => {
-    if (!isTractorRevving || !smokeCanvasRef.current) return;
-    const canvas = smokeCanvasRef.current;
-    const ctx = canvas.getContext('2d');
-    if (!ctx) return;
-    const width = canvas.width = window.innerWidth;
-    const height = canvas.height = window.innerHeight;
-
-    const isMobile = width < 640;
-    const exhaustX = isMobile ? width * 0.575 : width * 0.528;
-    const exhaustY = isMobile ? height * 0.645 : height * 0.38;
-
-    const smokePuffs: SmokePuff[] = [];
-    for (let i = 0; i < 20; i++) {
-      smokePuffs.push({
-        x: exhaustX + (Math.random() - 0.5) * 8,
-        y: exhaustY + (Math.random() - 0.5) * 8,
-        radius: Math.random() * 8 + 6,
-        maxRadius: Math.random() * 32 + 20,
-        alpha: 0.65,
-        speedY: -(Math.random() * 1.8 + 1.2),
-        speedX: (Math.random() - 0.2) * 1.1,
-        growth: Math.random() * 0.4 + 0.3
-      });
-    }
-
-    let smokeAnimId: number;
-    const renderSmoke = () => {
-      ctx.clearRect(0, 0, width, height);
-
-      for (let i = smokePuffs.length - 1; i >= 0; i--) {
-        const p = smokePuffs[i];
-        p.x += p.speedX;
-        p.y += p.speedY;
-        p.radius += p.growth;
-        p.alpha -= 0.014;
-
-        if (p.alpha <= 0 || p.radius >= p.maxRadius) {
-          smokePuffs.splice(i, 1);
+        if (s.alpha <= 0) {
+          smokeRef.current.splice(i, 1);
           continue;
         }
 
         ctx.beginPath();
-        ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(180, 175, 160, ${p.alpha})`;
-        ctx.shadowBlur = 8;
-        ctx.shadowColor = `rgba(140, 130, 110, ${p.alpha * 0.5})`;
+        ctx.arc(s.x, s.y, s.radius, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(80, 80, 80, ${s.alpha * 0.45})`;
+        ctx.shadowBlur = 10;
+        ctx.shadowColor = `rgba(40, 40, 40, ${s.alpha * 0.3})`;
         ctx.fill();
-        ctx.shadowBlur = 0;
       }
 
-      if (smokePuffs.length > 0) {
-        smokeAnimId = requestAnimationFrame(renderSmoke);
-      } else {
-        ctx.clearRect(0, 0, width, height);
-      }
+      animFrame = requestAnimationFrame(render);
     };
 
-    renderSmoke();
+    animFrame = requestAnimationFrame(render);
 
     return () => {
-      cancelAnimationFrame(smokeAnimId);
+      cancelAnimationFrame(animFrame);
+      window.removeEventListener('resize', handleResize);
     };
-  }, [isTractorRevving]);
+  }, []);
 
   return (
-    <>
-      <canvas ref={canvasRef} className="fixed inset-0 pointer-events-none z-10 w-full h-full" />
-      <canvas ref={smokeCanvasRef} className="fixed inset-0 pointer-events-none z-20 w-full h-full" />
-    </>
+    <canvas
+      ref={canvasRef}
+      className="fixed inset-0 pointer-events-none z-10 w-full h-full"
+    />
   );
 }
