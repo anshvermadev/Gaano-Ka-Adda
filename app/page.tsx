@@ -206,7 +206,12 @@ export default function Home(): React.JSX.Element {
   }, []);
 
   const handleYTError = useCallback((errorCode: number) => {
-    console.warn('Playback error encountered:', errorCode);
+    console.warn('Playback error encountered:', errorCode, 'Skipping to next track...');
+    if (errorCode === 100 || errorCode === 101 || errorCode === 150) {
+      setTimeout(() => {
+        handleNext();
+      }, 500);
+    }
   }, []);
 
   const handleSongEnded = () => {

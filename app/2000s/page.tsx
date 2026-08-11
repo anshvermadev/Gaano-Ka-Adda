@@ -23,6 +23,7 @@ export default function Page2000s(): React.JSX.Element {
   const repeatModeRef = useRef<RepeatMode>(repeatMode);
   const currentIndexRef = useRef<number>(currentIndex);
   const ytPlayerRef = useRef<any>(null);
+  const audioCtxRef = useRef<AudioContext | null>(null);
 
   useEffect(() => {
     isShuffleRef.current = isShuffle;
@@ -41,15 +42,32 @@ export default function Page2000s(): React.JSX.Element {
     return nextIdx;
   };
 
+  const initAudioContext = () => {
+    if (!audioCtxRef.current && typeof window !== 'undefined') {
+      const AudioCtx = window.AudioContext || (window as any).webkitAudioContext;
+      if (AudioCtx) {
+        audioCtxRef.current = new AudioCtx();
+      }
+    }
+    if (audioCtxRef.current && audioCtxRef.current.state === 'suspended') {
+      audioCtxRef.current.resume();
+    }
+  };
+
   const togglePlay = () => {
+    initAudioContext();
     if (!ytPlayerRef.current) {
       setIsPlaying(!isPlaying);
       return;
     }
-    if (isPlaying) {
-      ytPlayerRef.current.pauseVideo();
-    } else {
-      ytPlayerRef.current.playVideo();
+    try {
+      if (isPlaying) {
+        ytPlayerRef.current.pauseVideo();
+      } else {
+        ytPlayerRef.current.playVideo();
+      }
+    } catch (e) {
+      console.warn('Play/Pause error:', e);
     }
   };
 
@@ -61,24 +79,56 @@ export default function Page2000s(): React.JSX.Element {
   };
 
   const handlePlayNext = useCallback(() => {
+    initAudioContext();
+    let nextIdx: number;
     if (isShuffleRef.current) {
-      const nextIdx = getRandomIndex(currentIndexRef.current);
-      setCurrentIndex(nextIdx);
+      nextIdx = getRandomIndex(currentIndexRef.current);
     } else {
-      setCurrentIndex((prev) => (prev + 1) % SONGS_2000S.length);
+      nextIdx = (currentIndexRef.current + 1) % SONGS_2000S.length;
     }
+    setCurrentIndex(nextIdx);
+    setCurrentTime(0);
     setIsPlaying(true);
+    if (ytPlayerRef.current && typeof ytPlayerRef.current.loadVideoById === 'function') {
+      try {
+        ytPlayerRef.current.loadVideoById(SONGS_2000S[nextIdx].videoId);
+      } catch (e) {}
+    }
   }, []);
 
   const handlePlayPrevious = useCallback(() => {
-    if (isShuffleRef.current) {
-      const prevIdx = getRandomIndex(currentIndexRef.current);
-      setCurrentIndex(prevIdx);
-    } else {
-      setCurrentIndex((prev) => (prev - 1 + SONGS_2000S.length) % SONGS_2000S.length);
+    initAudioContext();
+    let prevIdx: number;
+    if (currentTime > 4) {
+      handleSeek(0);
+      return;
     }
+    if (isShuffleRef.current) {
+      prevIdx = getRandomIndex(currentIndexRef.current);
+    } else {
+      prevIdx = (currentIndexRef.current - 1 + SONGS_2000S.length) % SONGS_2000S.length;
+    }
+    setCurrentIndex(prevIdx);
+    setCurrentTime(0);
     setIsPlaying(true);
-  }, []);
+    if (ytPlayerRef.current && typeof ytPlayerRef.current.loadVideoById === 'function') {
+      try {
+        ytPlayerRef.current.loadVideoById(SONGS_2000S[prevIdx].videoId);
+      } catch (e) {}
+    }
+  }, [currentTime]);
+
+  const handleSelectSong = (index: number) => {
+    initAudioContext();
+    setCurrentIndex(index);
+    setCurrentTime(0);
+    setIsPlaying(true);
+    if (ytPlayerRef.current && typeof ytPlayerRef.current.loadVideoById === 'function') {
+      try {
+        ytPlayerRef.current.loadVideoById(SONGS_2000S[index].videoId);
+      } catch (e) {}
+    }
+  };
 
   // Background Audio Hook for continuous lock-screen / tab-switch audio
   useBackgroundAudio({
@@ -125,6 +175,15 @@ export default function Page2000s(): React.JSX.Element {
     }
   }, []);
 
+  const handleYTError = useCallback((errorCode: number) => {
+    console.warn('Playback error encountered:', errorCode, 'Skipping to next track...');
+    if (errorCode === 100 || errorCode === 101 || errorCode === 150) {
+      setTimeout(() => {
+        handlePlayNext();
+      }, 500);
+    }
+  }, [handlePlayNext]);
+
   const handleSongEnded = useCallback(() => {
     const mode = repeatModeRef.current;
     if (mode === 'one') {
@@ -142,11 +201,6 @@ export default function Page2000s(): React.JSX.Element {
       }
     }
   }, [handlePlayNext]);
-
-  const handleSelectSong = (index: number) => {
-    setCurrentIndex(index);
-    setIsPlaying(true);
-  };
 
   const toggleShuffle = () => {
     setIsShuffle((prev) => !prev);
@@ -169,6 +223,7 @@ export default function Page2000s(): React.JSX.Element {
         onPlayerReady={handleYTPlayerReady}
         onStateChange={handleYTStateChange}
         onTimeUpdate={handleTimeUpdate}
+        onError={handleYTError}
       />
 
       {/* Ambient Particle & Aesthetic Engine */}

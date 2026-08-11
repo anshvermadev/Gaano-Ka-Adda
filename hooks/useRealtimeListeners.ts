@@ -38,7 +38,7 @@ export function useRealtimeListeners(): number {
 
           if (type === 'PING') {
             activeTabs.set(senderId, Date.now());
-            channel?.postMessage({ type: 'PONG', senderId: tabId });
+            try { channel?.postMessage({ type: 'PONG', senderId: tabId }); } catch (e) {}
             updateCount();
           } else if (type === 'PONG') {
             activeTabs.set(senderId, Date.now());
@@ -60,17 +60,23 @@ export function useRealtimeListeners(): number {
 
     // Heartbeat every 2 seconds
     const heartbeat = setInterval(() => {
-      if (channel) {
-        channel.postMessage({ type: 'PING', senderId: tabId });
+      try {
+        if (channel) {
+          channel.postMessage({ type: 'PING', senderId: tabId });
+        }
+      } catch (e) {
+        // Channel may have been closed by cleanup
       }
       updateCount();
     }, 2000);
 
     const handleUnload = () => {
-      if (channel) {
-        channel.postMessage({ type: 'LEAVE', senderId: tabId });
-        channel.close();
-      }
+      try {
+        if (channel) {
+          channel.postMessage({ type: 'LEAVE', senderId: tabId });
+          channel.close();
+        }
+      } catch (e) {}
     };
 
     window.addEventListener('beforeunload', handleUnload);
@@ -78,10 +84,13 @@ export function useRealtimeListeners(): number {
     return () => {
       clearInterval(heartbeat);
       window.removeEventListener('beforeunload', handleUnload);
-      if (channel) {
-        channel.postMessage({ type: 'LEAVE', senderId: tabId });
-        channel.close();
-      }
+      try {
+        if (channel) {
+          channel.postMessage({ type: 'LEAVE', senderId: tabId });
+          channel.close();
+          channel = null;
+        }
+      } catch (e) {}
     };
   }, []);
 

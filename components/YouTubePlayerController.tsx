@@ -92,12 +92,16 @@ export default function YouTubePlayerController({
             showinfo: 0,
             iv_load_policy: 3,
             enablejsapi: 1,
-            origin: typeof window !== 'undefined' ? window.location.origin : '',
             playsinline: 1,
           },
           events: {
             onReady: (event: any) => {
               readyRef.current = true;
+              if (isPlayingRef.current) {
+                try {
+                  event.target.playVideo();
+                } catch (e) {}
+              }
               if (onPlayerReady) onPlayerReady(event.target);
             },
             onStateChange: (event: any) => {
@@ -191,7 +195,8 @@ export default function YouTubePlayerController({
 
   return (
     <div
-      className="fixed bottom-0 right-0 w-[120px] h-[80px] pointer-events-none opacity-[0.001] z-10 overflow-hidden"
+      className="fixed bottom-0 right-0 w-[1px] h-[1px] opacity-100 z-10 pointer-events-none overflow-hidden"
+      style={{ clip: 'rect(0 0 0 0)', clipPath: 'inset(50%)' }}
       aria-hidden="true"
     >
       <div id="yt-player-instance" className="w-full h-full" />

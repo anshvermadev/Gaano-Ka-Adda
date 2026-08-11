@@ -9,10 +9,10 @@ export interface Song {
 export const SONGS: Song[] = [
   {
     id: 1,
-    title: "Aapke Pyaar Mein Hum",
-    artist: "Alka Yagnik • Raaz (2002)",
-    videoId: "6C34aCdjJtM",
-    cover: "https://img.youtube.com/vi/6C34aCdjJtM/mqdefault.jpg"
+    title: "Aaye Ho Meri Zindagi Mein",
+    artist: "Udit Narayan • Raja Hindustani",
+    videoId: "bBvlfHU4nDI",
+    cover: "https://img.youtube.com/vi/bBvlfHU4nDI/mqdefault.jpg"
   },
   {
     id: 2,
@@ -205,10 +205,10 @@ export const SONGS: Song[] = [
   },
   {
     id: 29,
-    title: "Hum Pyaar Hai Tumhare",
-    artist: "Kumar Sanu • Haan Maine Bhi Pyaar Kiya",
-    videoId: "wuLJtA0uJro",
-    cover: "https://img.youtube.com/vi/wuLJtA0uJro/mqdefault.jpg"
+    title: "Sona Kitna Sona Hai",
+    artist: "Udit Narayan, Poornima • Hero No.1",
+    videoId: "PlN6oP-Nlno",
+    cover: "https://img.youtube.com/vi/PlN6oP-Nlno/mqdefault.jpg"
   },
   {
     id: 30,
