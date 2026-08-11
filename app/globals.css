@@ -1,0 +1,33 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --color-cream: #fbf6ec;
+  --color-cream-dim: rgba(251, 246, 236, 0.75);
+}
+
+@keyframes tractorRumble {
+  0% { transform: translate3d(0, 0, 0) rotate(0deg); }
+  50% { transform: translate3d(0.8px, -1.2px, 0) rotate(0.08deg); }
+  100% { transform: translate3d(-0.8px, 0.8px, 0) rotate(-0.08deg); }
+}
+
+.animate-shake {
+  animation: tractorRumble 0.12s infinite linear alternate;
+}
+
+/* Custom scrollbar for playlist */
+::-webkit-scrollbar {
+  width: 4px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.4);
+}
