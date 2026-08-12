@@ -43,7 +43,7 @@ export default function HeroBanner({ onTractorClick, isTractorRevving }: HeroBan
       </div>
 
       {/* Main Title & Rotating Village Memory */}
-      <div className="relative z-20 pointer-events-none px-4 text-center flex flex-col items-center justify-center pt-16 sm:pt-20 md:pt-24">
+      <div className="relative z-20 pointer-events-none px-4 text-center flex flex-col items-center justify-center pt-20 sm:pt-24 md:pt-24">
         <motion.h1
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}

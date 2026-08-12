@@ -35,7 +35,7 @@ export default function HeroBannerDhurandhar(): React.JSX.Element {
       </div>
 
       {/* Responsive Content Container: Left-Right on Desktop, Stacked on Mobile */}
-      <div className="relative z-20 w-full h-full pointer-events-none px-6 sm:px-12 md:px-16 lg:px-24 flex flex-col md:flex-row items-center justify-center md:justify-between pt-16 md:pt-0 pb-20 md:pb-0 gap-6 md:gap-12">
+      <div className="relative z-20 w-full h-full pointer-events-none px-6 sm:px-12 md:px-16 lg:px-24 flex flex-col md:flex-row items-center justify-center md:justify-between pt-20 sm:pt-24 md:pt-0 pb-20 md:pb-0 gap-6 md:gap-12">
         
         {/* Left Side (Desktop) / Top (Mobile): Main Title */}
         <div className="flex flex-col items-center md:items-start text-center md:text-left max-w-xl">

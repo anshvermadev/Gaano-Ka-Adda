@@ -54,7 +54,7 @@ export default function HeroBannerTruck({
       </div>
 
       {/* Main Title & Rotating Quote Directly Below "ट्रक वाला" */}
-      <div className="relative z-20 pointer-events-none px-4 text-center flex flex-col items-center justify-center pt-16 sm:pt-20 md:pt-24">
+      <div className="relative z-20 pointer-events-none px-4 text-center flex flex-col items-center justify-center pt-20 sm:pt-24 md:pt-24">
         <motion.div
           initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}

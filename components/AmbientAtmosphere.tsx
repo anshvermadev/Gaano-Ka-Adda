@@ -4,7 +4,7 @@ import React, { useEffect, useRef } from 'react';
 
 interface AmbientAtmosphereProps {
   isTractorRevving?: boolean;
-  era?: '90s' | '2000s' | 'truck' | 'dhurandhar';
+  era?: '90s' | '2000s' | 'truck' | 'dhurandhar' | 'longdrive';
 }
 
 interface DustParticle {
@@ -50,7 +50,7 @@ export default function AmbientAtmosphere({
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const smokeRef = useRef<SmokeParticle[]>([]);
   const isRevvingRef = useRef<boolean>(isTractorRevving);
-  const eraRef = useRef<'90s' | '2000s' | 'truck' | 'dhurandhar'>(era);
+  const eraRef = useRef<'90s' | '2000s' | 'truck' | 'dhurandhar' | 'longdrive'>(era);
 
   useEffect(() => {
     isRevvingRef.current = isTractorRevving;
@@ -80,6 +80,7 @@ export default function AmbientAtmosphere({
     const is2000s = era === '2000s';
     const isTruck = era === 'truck';
     const isDhurandhar = era === 'dhurandhar';
+    const isLongDrive = era === 'longdrive';
 
     // Particle Palette Setup
     const romanticGlowColors = [
@@ -103,6 +104,13 @@ export default function AmbientAtmosphere({
       { fill: '255, 245, 200', glow: 'rgba(255, 200, 100, 0.5)' },
     ];
 
+    const longDriveGlowColors = [
+      { fill: '56, 189, 248', glow: 'rgba(56, 189, 248, 0.7)' },
+      { fill: '96, 165, 250', glow: 'rgba(96, 165, 250, 0.6)' },
+      { fill: '192, 132, 252', glow: 'rgba(192, 132, 252, 0.6)' },
+      { fill: '224, 242, 254', glow: 'rgba(224, 242, 254, 0.5)' },
+    ];
+
     const romanticPetalColors = [
       { main: 'rgba(244, 114, 182, 0.65)', tint: 'rgba(251, 168, 203, 0.4)' },
       { main: 'rgba(251, 113, 133, 0.65)', tint: 'rgba(253, 164, 175, 0.4)' },
@@ -122,12 +130,20 @@ export default function AmbientAtmosphere({
       { main: 'rgba(251, 191, 36, 0.85)', tint: 'rgba(245, 158, 11, 0.5)' },
     ];
 
+    const longDriveStreakColors = [
+      { main: 'rgba(56, 189, 248, 0.75)', tint: 'rgba(14, 165, 233, 0.45)' },
+      { main: 'rgba(129, 140, 248, 0.7)', tint: 'rgba(99, 102, 241, 0.4)' },
+      { main: 'rgba(192, 132, 252, 0.65)', tint: 'rgba(168, 85, 247, 0.35)' },
+    ];
+
     // Particles
-    const dustCount = Math.min(width < 768 ? 30 : (isDhurandhar ? 65 : 55), 75);
+    const dustCount = Math.min(width < 768 ? 32 : (isLongDrive ? 60 : isDhurandhar ? 65 : 55), 75);
     const dustParticles: DustParticle[] = [];
     for (let i = 0; i < dustCount; i++) {
       let palette: { fill: string; glow: string };
-      if (isDhurandhar) {
+      if (isLongDrive) {
+        palette = longDriveGlowColors[Math.floor(Math.random() * longDriveGlowColors.length)];
+      } else if (isDhurandhar) {
         palette = dhurandharGlowColors[Math.floor(Math.random() * dhurandharGlowColors.length)];
       } else if (isTruck) {
         palette = truckGlowColors[Math.floor(Math.random() * truckGlowColors.length)];
@@ -140,10 +156,10 @@ export default function AmbientAtmosphere({
       dustParticles.push({
         x: Math.random() * width,
         y: Math.random() * height,
-        radius: isDhurandhar ? Math.random() * 2.2 + 0.8 : isTruck ? Math.random() * 1.8 + 0.6 : is2000s ? Math.random() * 2.0 + 0.8 : Math.random() * 1.5 + 0.6,
+        radius: isLongDrive ? Math.random() * 2.0 + 0.7 : isDhurandhar ? Math.random() * 2.2 + 0.8 : isTruck ? Math.random() * 1.8 + 0.6 : is2000s ? Math.random() * 2.0 + 0.8 : Math.random() * 1.5 + 0.6,
         alpha: Math.random() * 0.5 + 0.2,
-        speedX: isDhurandhar ? (Math.random() - 0.5) * 0.7 + 0.1 : isTruck ? (Math.random() - 0.5) * 0.5 + 0.2 : is2000s ? (Math.random() - 0.5) * 0.4 + 0.15 : (Math.random() - 0.5) * 0.35 + 0.2,
-        speedY: isDhurandhar ? -(Math.random() * 0.7 + 0.3) : isTruck ? -(Math.random() * 0.4 + 0.1) : is2000s ? -(Math.random() * 0.35 + 0.1) : (Math.random() - 0.5) * 0.2 - 0.15,
+        speedX: isLongDrive ? (Math.random() - 0.5) * 0.6 + 0.2 : isDhurandhar ? (Math.random() - 0.5) * 0.7 + 0.1 : isTruck ? (Math.random() - 0.5) * 0.5 + 0.2 : is2000s ? (Math.random() - 0.5) * 0.4 + 0.15 : (Math.random() - 0.5) * 0.35 + 0.2,
+        speedY: isLongDrive ? -(Math.random() * 0.4 + 0.1) : isDhurandhar ? -(Math.random() * 0.7 + 0.3) : isTruck ? -(Math.random() * 0.4 + 0.1) : is2000s ? -(Math.random() * 0.35 + 0.1) : (Math.random() - 0.5) * 0.2 - 0.15,
         wobble: Math.random() * Math.PI * 2,
         pulseSpeed: Math.random() * 0.04 + 0.02,
         color: palette.fill,
@@ -151,12 +167,14 @@ export default function AmbientAtmosphere({
       });
     }
 
-    // Floating Petals / Leaves / Sparks / Action Embers
-    const elementCount = Math.min(width < 768 ? (isDhurandhar ? 8 : is2000s ? 7 : 5) : (isDhurandhar ? 16 : is2000s ? 14 : 8), 18);
+    // Floating Petals / Leaves / Sparks / Action Embers / Road Streaks
+    const elementCount = Math.min(width < 768 ? (isLongDrive ? 8 : isDhurandhar ? 8 : is2000s ? 7 : 5) : (isLongDrive ? 14 : isDhurandhar ? 16 : is2000s ? 14 : 8), 18);
     const floatingElements: PetalOrLeaf[] = [];
     for (let i = 0; i < elementCount; i++) {
       let petalCol: { main: string; tint: string };
-      if (isDhurandhar) {
+      if (isLongDrive) {
+        petalCol = longDriveStreakColors[Math.floor(Math.random() * longDriveStreakColors.length)];
+      } else if (isDhurandhar) {
         petalCol = dhurandharEmberColors[Math.floor(Math.random() * dhurandharEmberColors.length)];
       } else if (isTruck) {
         petalCol = truckSparkColors[Math.floor(Math.random() * truckSparkColors.length)];
@@ -169,9 +187,9 @@ export default function AmbientAtmosphere({
       floatingElements.push({
         x: Math.random() * width,
         y: Math.random() * height,
-        size: isDhurandhar ? Math.random() * 4 + 2 : isTruck ? Math.random() * 4 + 2 : is2000s ? Math.random() * 7 + 5 : Math.random() * 6 + 4,
-        speedY: isDhurandhar ? -(Math.random() * 0.9 + 0.4) : isTruck ? -(Math.random() * 0.6 + 0.3) : is2000s ? Math.random() * 0.55 + 0.35 : Math.random() * 0.6 + 0.3,
-        speedX: isDhurandhar ? (Math.random() - 0.5) * 0.8 + 0.2 : isTruck ? (Math.random() - 0.5) * 0.6 + 0.3 : is2000s ? Math.random() * 0.5 + 0.2 : Math.random() * 0.8 + 0.4,
+        size: isLongDrive ? Math.random() * 4 + 2 : isDhurandhar ? Math.random() * 4 + 2 : isTruck ? Math.random() * 4 + 2 : is2000s ? Math.random() * 7 + 5 : Math.random() * 6 + 4,
+        speedY: isLongDrive ? -(Math.random() * 0.5 + 0.2) : isDhurandhar ? -(Math.random() * 0.9 + 0.4) : isTruck ? -(Math.random() * 0.6 + 0.3) : is2000s ? Math.random() * 0.55 + 0.35 : Math.random() * 0.6 + 0.3,
+        speedX: isLongDrive ? (Math.random() - 0.5) * 0.8 + 0.3 : isDhurandhar ? (Math.random() - 0.5) * 0.8 + 0.2 : isTruck ? (Math.random() - 0.5) * 0.6 + 0.3 : is2000s ? Math.random() * 0.5 + 0.2 : Math.random() * 0.8 + 0.4,
         rotation: Math.random() * 360,
         rotSpeed: (Math.random() - 0.5) * 2.5,
         swing: Math.random() * Math.PI * 2,
@@ -205,15 +223,15 @@ export default function AmbientAtmosphere({
         ctx.beginPath();
         ctx.arc(d.x, d.y, d.radius, 0, Math.PI * 2);
         ctx.fillStyle = `rgba(${d.color || '255, 245, 200'}, ${clampedAlpha})`;
-        ctx.shadowBlur = isDhurandhar ? 8 : isTruck ? 6 : is2000s ? 7 : 4;
+        ctx.shadowBlur = isLongDrive ? 8 : isDhurandhar ? 8 : isTruck ? 6 : is2000s ? 7 : 4;
         ctx.shadowColor = d.glowColor || 'rgba(255, 230, 150, 0.4)';
         ctx.fill();
       }
 
-      // Reset shadow for petals
+      // Reset shadow
       ctx.shadowBlur = 0;
 
-      // 2. Render Petals / Sparks / Leaves / Embers
+      // 2. Render Petals / Sparks / Leaves / Embers / Road Streaks
       for (const item of floatingElements) {
         item.y += item.speedY;
         item.swing += item.swingSpeed;
@@ -239,7 +257,15 @@ export default function AmbientAtmosphere({
         ctx.translate(item.x, item.y);
         ctx.rotate((item.rotation * Math.PI) / 180);
 
-        if (isDhurandhar || isTruck) {
+        if (isLongDrive) {
+          // Night Road Light Streak
+          ctx.beginPath();
+          ctx.ellipse(0, 0, item.size * 1.6, item.size * 0.6, 0, 0, Math.PI * 2);
+          ctx.fillStyle = item.color;
+          ctx.shadowBlur = 10;
+          ctx.shadowColor = item.tintColor;
+          ctx.fill();
+        } else if (isDhurandhar || isTruck) {
           // Action Ember / Spark
           ctx.beginPath();
           ctx.arc(0, 0, item.size, 0, Math.PI * 2);
