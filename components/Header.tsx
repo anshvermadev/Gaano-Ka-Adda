@@ -6,7 +6,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { useRealtimeListeners } from '../hooks/useRealtimeListeners';
 
 interface HeaderProps {
-  currentEra?: '90s' | '2000s' | 'truck';
+  currentEra?: '90s' | '2000s' | 'truck' | 'dhurandhar';
 }
 
 export default function Header({ currentEra = '90s' }: HeaderProps): React.JSX.Element {
@@ -32,26 +32,30 @@ export default function Header({ currentEra = '90s' }: HeaderProps): React.JSX.E
     return () => clearInterval(interval);
   }, []);
 
-  const ytMusicUrl = currentEra === 'truck'
+  const ytMusicUrl = currentEra === 'dhurandhar'
+    ? "https://www.youtube.com/playlist?list=PL6kG-M7dVg_yYYZh-oEbUCqo0lMFYbjoZ"
+    : currentEra === 'truck'
     ? "https://music.youtube.com/playlist?list=PLeatb7hupNV_AWUl_7ttbsKeCQh8tF5N4"
     : currentEra === '2000s'
     ? "https://www.youtube.com/playlist?list=PLAFjPVdERAkt7jNU1XW7EWXHLyYyf7Sux"
     : "https://music.youtube.com/playlist?list=PL--o-tfjAs5J7M5M5obyQPpmFnPi1a_Ev";
     
-  const spotifyUrl = currentEra === 'truck'
+  const spotifyUrl = currentEra === 'dhurandhar'
+    ? "https://open.spotify.com/search/Dhurandhar%20The%20Revenge"
+    : currentEra === 'truck'
     ? "https://open.spotify.com/search/90s%20hindi%20highway%20truck%20hits"
     : currentEra === '2000s'
     ? "https://open.spotify.com/search/2000s%20bollywood%20romance%20hits"
     : "https://open.spotify.com/search/90s%20hindi%20nostalgia%20hits";
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-40 px-4 sm:px-10 py-4 sm:py-5 flex items-center justify-between pointer-events-none drop-shadow-md">
+    <header className="fixed top-0 left-0 right-0 z-40 px-3 sm:px-10 py-3 sm:py-5 flex items-center justify-between pointer-events-none drop-shadow-md">
       {/* Left: Real-time clock with Custom Tooltip */}
       <motion.div 
         initial={{ opacity: 0, y: -10 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6 }}
-        className="flex items-center gap-3 justify-start pointer-events-auto"
+        className="flex items-center gap-2 sm:gap-3 justify-start pointer-events-auto"
       >
         <div className="relative group/clock">
           <span className="text-white/90 text-xs sm:text-sm font-medium tracking-wider font-mono drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)] cursor-default">
@@ -63,8 +67,8 @@ export default function Header({ currentEra = '90s' }: HeaderProps): React.JSX.E
           </div>
         </div>
 
-        {/* Era Navigation Pill */}
-        <div className="hidden md:flex items-center p-0.5 rounded-full bg-black/40 backdrop-blur-md border border-white/15 text-xs">
+        {/* Era Navigation Pill (Desktop) */}
+        <div className="hidden lg:flex items-center p-0.5 rounded-full bg-black/40 backdrop-blur-md border border-white/15 text-xs">
           <Link
             href="/"
             className={`px-3 py-1 rounded-full transition-all duration-200 ${
@@ -95,6 +99,16 @@ export default function Header({ currentEra = '90s' }: HeaderProps): React.JSX.E
           >
             🚛 ट्रक वाला
           </Link>
+          <Link
+            href="/dhurandhar"
+            className={`px-3 py-1 rounded-full transition-all duration-200 ${
+              currentEra === 'dhurandhar'
+                ? 'bg-orange-500/35 text-orange-300 font-semibold border border-orange-400/50 shadow-sm'
+                : 'text-white/60 hover:text-white hover:bg-white/10'
+            }`}
+          >
+            🔥 धुरंधर
+          </Link>
         </div>
       </motion.div>
 
@@ -108,8 +122,12 @@ export default function Header({ currentEra = '90s' }: HeaderProps): React.JSX.E
         <div className="relative group/online">
           <div className="flex items-center gap-2 px-3 sm:px-3.5 py-1 sm:py-1.5 rounded-full bg-black/40 backdrop-blur-md border border-white/15 text-xs text-white/95 font-medium shadow-[0_4px_12px_rgba(0,0,0,0.3)] hover:border-white/30 transition-all cursor-default">
             <span className="relative flex h-2 w-2">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-              <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500 shadow-[0_0_8px_#10b981]"></span>
+              <span className={`animate-ping absolute inline-flex h-full w-full rounded-full ${
+                currentEra === 'dhurandhar' ? 'bg-orange-400' : 'bg-emerald-400'
+              } opacity-75`}></span>
+              <span className={`relative inline-flex rounded-full h-2 w-2 ${
+                currentEra === 'dhurandhar' ? 'bg-orange-500 shadow-[0_0_8px_#f97316]' : 'bg-emerald-500 shadow-[0_0_8px_#10b981]'
+              }`}></span>
             </span>
             <div className="flex items-center gap-1">
               <AnimatePresence mode="popLayout">
@@ -119,17 +137,19 @@ export default function Header({ currentEra = '90s' }: HeaderProps): React.JSX.E
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: 4 }}
                   transition={{ duration: 0.25 }}
-                  className="inline-block tabular-nums font-semibold text-emerald-300"
+                  className={`inline-block tabular-nums font-semibold ${
+                    currentEra === 'dhurandhar' ? 'text-orange-300' : 'text-emerald-300'
+                  }`}
                 >
                   {mounted ? onlineCount : 1}
                 </motion.span>
               </AnimatePresence>
-              <span>{currentEra === 'truck' ? 'on the highway' : 'online'}</span>
+              <span>{currentEra === 'truck' ? 'on the highway' : currentEra === 'dhurandhar' ? 'in the arena' : 'online'}</span>
             </div>
           </div>
 
           <div className="pointer-events-none absolute -bottom-10 left-1/2 -translate-x-1/2 px-3 py-1 rounded-xl bg-neutral-900/95 backdrop-blur-xl border border-white/25 text-xs font-medium text-white tracking-wide whitespace-nowrap shadow-[0_8px_20px_rgba(0,0,0,0.7)] opacity-0 group-hover/online:opacity-100 transition-all duration-200 translate-y-0 group-hover/online:translate-y-1 scale-95 group-hover/online:scale-100 z-50">
-            {currentEra === 'truck' ? 'Drivers on the Highway' : 'Active Listeners'}
+            {currentEra === 'truck' ? 'Drivers on the Highway' : currentEra === 'dhurandhar' ? 'Dhurandhar Action Listeners' : 'Active Listeners'}
             <div className="absolute -top-1 left-1/2 -translate-x-1/2 w-2 h-2 rotate-45 bg-neutral-900/95 border-l border-t border-white/25" />
           </div>
         </div>
@@ -140,10 +160,10 @@ export default function Header({ currentEra = '90s' }: HeaderProps): React.JSX.E
         initial={{ opacity: 0, y: -10 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6, delay: 0.1 }}
-        className="flex items-center gap-3 sm:gap-4 justify-end pointer-events-auto"
+        className="flex items-center gap-2 sm:gap-4 justify-end pointer-events-auto"
       >
-        {/* Mobile Era Switcher */}
-        <div className="flex md:hidden items-center p-0.5 rounded-full bg-black/40 backdrop-blur-md border border-white/15 text-[11px]">
+        {/* Mobile / Tablet Era Switcher */}
+        <div className="flex lg:hidden items-center p-0.5 rounded-full bg-black/40 backdrop-blur-md border border-white/15 text-[11px]">
           <Link
             href="/"
             className={`px-2 py-0.5 rounded-full transition-all ${
@@ -167,6 +187,14 @@ export default function Header({ currentEra = '90s' }: HeaderProps): React.JSX.E
             }`}
           >
             🚛
+          </Link>
+          <Link
+            href="/dhurandhar"
+            className={`px-2 py-0.5 rounded-full transition-all ${
+              currentEra === 'dhurandhar' ? 'bg-orange-500/35 text-orange-300 font-semibold' : 'text-white/60'
+            }`}
+          >
+            🔥
           </Link>
         </div>
 
