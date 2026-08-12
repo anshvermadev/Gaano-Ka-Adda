@@ -25,14 +25,14 @@ export default function HeroBanner({ onTractorClick, isTractorRevving }: HeroBan
       <div className={`absolute inset-0 z-0 pointer-events-none transition-transform duration-300 ${isTractorRevving ? 'animate-shake' : ''}`}>
         {/* Mobile Vertical Background (Portrait) */}
         <img
-          src="/bg-mobile.png"
+          src="/bg-mobile.webp"
           alt="90s Indian Village Scene - Mobile Background"
           className="block sm:hidden w-full h-full object-cover object-center filter saturate-[1.05] contrast-[1.02]"
         />
 
         {/* Desktop Landscape Background */}
         <img
-          src="/bg-desktop.png"
+          src="/bg-desktop.webp"
           alt="90s Indian Village Scene - Desktop Background"
           className="hidden sm:block w-full h-full object-cover object-center filter saturate-[1.05] contrast-[1.02]"
         />

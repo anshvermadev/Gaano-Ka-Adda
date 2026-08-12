@@ -20,14 +20,14 @@ export default function HeroBanner2000s(): React.JSX.Element {
       <div className="absolute inset-0 z-0 pointer-events-none">
         {/* Mobile Vertical Background */}
         <img
-          src="/bg-2000s-mobile.png"
+          src="/bg-2000s-mobile.webp"
           alt="2000s Bollywood Romance Scene - Mobile"
           className="block sm:hidden w-full h-full object-cover object-center filter saturate-[1.1] contrast-[1.05] brightness-90"
         />
 
         {/* Desktop Landscape Background */}
         <img
-          src="/bg-2000s-desktop.png"
+          src="/bg-2000s-desktop.webp"
           alt="2000s Bollywood Romance Scene - Desktop"
           className="hidden sm:block w-full h-full object-cover object-center filter saturate-[1.1] contrast-[1.05] brightness-90"
         />
