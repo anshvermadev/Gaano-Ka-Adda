@@ -1,6 +1,6 @@
 # Gaano Ka Adda (गानों का अड्डा) 🎵
 
-> **The ultimate Indian music hangout spot** - Immersive, scenic Indian audio & era-based musical experiences spanning 90s Nostalgia, 2000s Hits, Highway Truck Vibes, Action Cinema, Late Night Road Trips, and Gen-Z trends.
+> **The ultimate Indian music hangout spot** - Immersive, scenic Indian audio & era-based musical experiences spanning 90s Nostalgia, 2000s Hits, Highway Truck Vibes, Action Cinema, Late Night Road Trips, and Bollywood Lo-Fi.
 
 ---
 
@@ -11,6 +11,7 @@
 - **Phase 3: ट्रक वाला (Highway Express - `/truck`)** - 54 classic highway road trip anthems with dynamic video background (bg.mp4), interactive "हॉर्न ओके प्लीज़" horn easter egg (horn.mp3), rotating authentic truck shayari, and real-time highway presence counter.
 - **Phase 4: धुरंधर (Action Cinema - `/dhurandhar`)** - 29 high-octane tracks from Dhurandhar Part 1 & 2 by Shashwat Sachdev, featuring cinematic WebP visual, fiery ember particle engine, rotating iconic action dialogues, and arena presence badge.
 - **Phase 5: लॉन्ग ड्राइव (Late Night Road Trip - `/long-drive`)** - 52 classic road trip and late-night highway anthems (Ilahi, Iktara, Dil Dhadakne Do, Ik Junoon, Dil Chahta Hai, Amplifier) with responsive WebP mobile/desktop scenes, midnight neon light streak effects, rotating road trip memories, and "on the road" live presence badge.
+- **Phase 6: लो-फाई लव (Bollywood Lofi Romance - `/lofi`)** - 30 soul-soothing slowed & reverb Bollywood love songs (Tera Chehra, Hawayein, Ishq Sufiyana, Samjhawan, Sanam Re, Galliyan) with dreamy pastel mobile & desktop anime scenes, floating cherry blossom petals, rotating lofi quotes, and "in lofi mood" live badge.
 - **Future Phases**: Additional themed hangouts (Train Journeys, Monsoon Terraces, Chai Dhaba, Gen-Z Lo-Fi).
 
 ---
@@ -42,6 +43,7 @@ npm run dev
 - Highway Truck Express: [http://localhost:3000/truck](http://localhost:3000/truck)
 - Dhurandhar Action Cinema: [http://localhost:3000/dhurandhar](http://localhost:3000/dhurandhar)
 - Late Night Road Trip: [http://localhost:3000/long-drive](http://localhost:3000/long-drive)
+- Bollywood Lofi Romance: [http://localhost:3000/lofi](http://localhost:3000/lofi)
 
 ### 3. Production Build
 ```bash
