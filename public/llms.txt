@@ -1,0 +1,27 @@
+# Gaano Ka Adda (गानों का अड्डा) 🎵
+
+> The ultimate Indian music hangout spot - Immersive, scenic Indian audio and era-based musical experiences spanning 90s Village Nostalgia, 2000s Bollywood Romance, Highway Truck Vibes, Action Cinema, Late Night Road Trips, Bollywood Lo-Fi, and High-Energy Phonk.
+
+## 🌟 Musical Experience Modules
+
+- [ट्रैक्टर वाला (Tractor Waala)](/): 90s Indian Village Nostalgia with authentic retro radio player, scenic rural visuals, ambient atmospheric particles, interactive tractor rev audio, and real-time listeners counter.
+- [सदाबहार 2000s (Bollywood Romance)](/2000s): 69 iconic Bollywood romantic classics from 90s to 2000s (DDLJ, KKHH, Mohabbatein, Veer-Zaara, Jab We Met, Kal Ho Naa Ho) with falling rose petals.
+- [ट्रक वाला (Highway Express)](/truck): 54 classic highway road trip anthems with dynamic motion video, interactive "Horn OK Please" sound effects, and authentic truck shayari.
+- [धुरंधर (Action Cinema)](/dhurandhar): 29 high-octane tracks from Dhurandhar Part 1 & 2 by Shashwat Sachdev, featuring cinematic visual, fiery ember particle engine, and iconic dialogue rotation.
+- [लॉन्ग ड्राइव (Late Night Road Trip)](/long-drive): 52 classic road trip and late-night highway anthems (Ilahi, Iktara, Dil Dhadakne Do, Ik Junoon, Dil Chahta Hai, Amplifier) with midnight cyan light streak effects.
+- [लो-फाई लव (Bollywood Lofi)](/lofi): 30 soul-soothing slowed and reverb Bollywood love songs (Tera Chehra, Hawayein, Ishq Sufiyana, Samjhawan, Sanam Re, Galliyan) with dreamy pastel anime visual and floating cherry blossom petals.
+- [PHONK / FUNK (Brazilian Phonk & Drift)](/phonk): 23 high-voltage viral Brazilian Phonk and drift funk anthems (LUZ ROJA, Montagem Vozes Talentinho, FUNK CRIMINAL, GOZALO, Montagem Bailão) with dark neon drift anime scenes and electric crimson flares.
+
+## 🛠️ Technology Stack
+
+- Framework: Next.js (App Router, Turbopack)
+- Styling: Tailwind CSS & Vanilla CSS
+- Animations: Framer Motion & Canvas Particle Engine
+- Audio & Media: YouTube IFrame API Controller & Web Audio API Synth Engine
+- State & Realtime: React Hooks & Organic Active Presence Engine
+
+## 📄 Documentation & Links
+
+- Full LLM Context: /llms-full.txt
+- XML Sitemap: /sitemap.xml
+- Web App Manifest: /manifest.webmanifest

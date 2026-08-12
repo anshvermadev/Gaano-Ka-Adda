@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
+import { FaGithub } from "react-icons/fa";
 import { useRealtimeListeners } from '../hooks/useRealtimeListeners';
 
 export type Era = '90s' | '2000s' | 'truck' | 'dhurandhar' | 'longdrive' | 'lofi' | 'phonk';
@@ -310,14 +311,14 @@ export default function Navbar({ currentEra = '90s' }: NavbarProps): React.JSX.E
               <div className="flex items-center gap-1">
                 <AnimatePresence mode="popLayout">
                   <motion.span
-                    key={mounted ? onlineCount : 1}
+                    key={mounted ? onlineCount : 19}
                     initial={{ opacity: 0, y: -4 }}
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, y: 4 }}
                     transition={{ duration: 0.25 }}
                     className={`inline-block tabular-nums font-semibold ${getBadgeTextColor()}`}
                   >
-                    {mounted ? onlineCount : 1}
+                    {mounted ? onlineCount : 19}
                   </motion.span>
                 </AnimatePresence>
                 <span>{getPresenceText()}</span>
@@ -380,6 +381,23 @@ export default function Navbar({ currentEra = '90s' }: NavbarProps): React.JSX.E
             </div>
           </div>
 
+          {/* GitHub Repo Link (Desktop) */}
+          <div className="relative group/github hidden sm:block">
+            <a
+              href="https://github.com/anshvermadev/Gaano-Ka-Adda"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-1.5 px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-full bg-black/45 hover:bg-black/70 backdrop-blur-xl border border-white/15 hover:border-white/35 text-[11px] sm:text-xs font-medium text-white/85 hover:text-white transition-all shadow-md cursor-pointer group"
+            >
+              <FaGithub className="w-3.5 h-3.5 text-white/90 group-hover:text-white transition-colors" />
+              <span className="hidden xl:inline">GitHub</span>
+            </a>
+            <div className="pointer-events-none absolute -bottom-10 right-0 px-3 py-1 rounded-xl bg-neutral-900/95 backdrop-blur-xl border border-white/25 text-xs font-medium text-white tracking-wide whitespace-nowrap shadow-[0_8px_20px_rgba(0,0,0,0.7)] opacity-0 group-hover/github:opacity-100 transition-all duration-200 translate-y-0 group-hover/github:translate-y-1 scale-95 group-hover/github:scale-100 z-50">
+              Made by Ansh Verma
+              <div className="absolute -top-1 right-3 w-2 h-2 rotate-45 bg-neutral-900/95 border-l border-t border-white/25" />
+            </div>
+          </div>
+
         </motion.div>
       </nav>
 
@@ -402,14 +420,14 @@ export default function Navbar({ currentEra = '90s' }: NavbarProps): React.JSX.E
               animate={{ opacity: 1, y: 0, scale: 1 }}
               exit={{ opacity: 0, y: -40, scale: 0.96 }}
               transition={{ duration: 0.28, ease: [0.16, 1, 0.3, 1] }}
-              className="fixed top-3 left-3 right-3 z-50 p-4 rounded-3xl bg-neutral-950/90 backdrop-blur-2xl border border-white/20 shadow-[0_20px_60px_rgba(0,0,0,0.9)] max-h-[85vh] flex flex-col justify-between md:hidden"
+              className="fixed top-3 left-3 right-3 z-50 p-4 rounded-3xl bg-neutral-950/95 backdrop-blur-2xl border border-white/20 shadow-[0_20px_60px_rgba(0,0,0,0.9)] max-h-[92vh] flex flex-col justify-between md:hidden"
             >
               {/* Header */}
               <div className="flex items-center justify-between pb-3 border-b border-white/10">
                 <div className="flex items-center gap-2">
                   <span className="w-2.5 h-2.5 rounded-full bg-red-500 animate-pulse" />
                   <span className="text-sm font-semibold font-devanagari text-white tracking-wide">
-                    गानों का अड्डा — सभी पेज
+                    गानों का अड्डा - सभी पेज
                   </span>
                 </div>
                 <button
@@ -424,8 +442,8 @@ export default function Navbar({ currentEra = '90s' }: NavbarProps): React.JSX.E
                 </button>
               </div>
 
-              {/* Scrollable Era Cards List */}
-              <div className="py-3 flex flex-col gap-2 overflow-y-auto max-h-[55vh] scrollbar-none">
+              {/* All 7 Era Cards - Generous Spacing, Zero Cropping & Crisp Typography */}
+              <div className="py-2.5 flex flex-col gap-2 max-h-[75vh] overflow-y-auto scrollbar-none">
                 {NAV_ITEMS.map((item) => {
                   const isActive = currentEra === item.id;
                   return (
@@ -433,61 +451,79 @@ export default function Navbar({ currentEra = '90s' }: NavbarProps): React.JSX.E
                       key={item.id}
                       href={item.href}
                       onClick={() => setIsMobileMenuOpen(false)}
-                      className={`group flex items-center justify-between p-3 rounded-2xl border transition-all duration-200 ${
+                      className={`group flex items-center justify-between px-4 py-2.5 sm:py-3 rounded-2xl border transition-all duration-200 ${
                         isActive
-                          ? `${item.activeBg} border-white/30`
+                          ? `${item.activeBg} border-white/35 shadow-md`
                           : 'bg-white/5 hover:bg-white/10 border-white/10 hover:border-white/20'
                       }`}
                     >
-                      <div className="flex flex-col text-left">
-                        <span className={`text-base font-bold font-devanagari ${
-                          isActive ? item.activeText : 'text-white/95 group-hover:text-white'
-                        }`}>
-                          {item.label}
-                        </span>
-                        <span className="text-xs text-white/60 font-medium">
-                          {item.subtitle}
-                        </span>
+                      <div className="flex items-center gap-3 min-w-0">
+                        <span className={`w-2.5 h-2.5 rounded-full shrink-0 ${
+                          isActive ? 'bg-emerald-400 animate-ping' : 'bg-white/30 group-hover:bg-white/60'
+                        }`} />
+                        <div className="flex flex-col text-left min-w-0 py-0.5 gap-0.5">
+                          <span className={`text-base sm:text-lg font-bold font-devanagari leading-normal truncate ${
+                            isActive ? item.activeText : 'text-white/95 group-hover:text-white'
+                          }`}>
+                            {item.label}
+                          </span>
+                          <span className="text-xs text-white/60 font-medium leading-normal truncate">
+                            {item.subtitle}
+                          </span>
+                        </div>
                       </div>
 
-                      <div className="flex items-center gap-2">
-                        <span className="text-[11px] px-2 py-0.5 rounded-full bg-black/40 border border-white/10 text-white/75">
+                      <div className="flex items-center gap-2 shrink-0 ml-2">
+                        <span className="text-xs px-2.5 py-1 rounded-full bg-black/45 border border-white/10 text-white/80 font-medium">
                           {item.trackCount}
                         </span>
-                        {isActive && (
-                          <span className="w-2 h-2 rounded-full bg-emerald-400 animate-ping" />
-                        )}
                       </div>
                     </Link>
                   );
                 })}
               </div>
 
-              {/* Footer with External Links */}
-              <div className="pt-3 border-t border-white/10 flex items-center justify-between text-xs text-white/70">
-                <a
-                  href={spotifyUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center gap-1.5 text-white/80 hover:text-white transition-colors"
-                >
-                  <svg className="w-3.5 h-3.5 text-[#1DB954]" viewBox="0 0 24 24" fill="currentColor">
-                    <path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.521 17.34c-.24.37-.73.49-1.1.25-3.01-1.84-6.8-2.26-11.26-1.24-.42.1-.84-.16-.94-.58-.1-.42.16-.84.58-.94 4.88-1.12 9.07-.64 12.47 1.41.37.24.49.73.25 1.1zm1.48-3.29c-.3.46-.91.61-1.37.31-3.44-2.12-8.68-2.73-12.75-1.5-.52.16-1.07-.14-1.23-.66-.16-.52.14-1.07.66-1.23 4.63-1.4 10.4-.73 14.38 1.71.46.3.61.91.31 1.37zm.14-3.42c-4.13-2.45-10.96-2.68-14.9-1.48-.63.19-1.3-.17-1.49-.8-.19-.63.17-1.3.8-1.49 4.51-1.37 12.06-1.11 16.8 1.7.57.34.76 1.08.42 1.65-.34.57-1.08.76-1.65.42z"/>
-                  </svg>
-                  <span>Spotify</span>
-                </a>
+              {/* Footer with External Links & Author Credit */}
+              <div className="pt-3 border-t border-white/10 flex flex-col gap-2">
+                <div className="flex items-center justify-between text-xs text-white/70">
+                  <a
+                    href={spotifyUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center gap-1.5 text-white/80 hover:text-white transition-colors"
+                  >
+                    <svg className="w-3.5 h-3.5 text-[#1DB954]" viewBox="0 0 24 24" fill="currentColor">
+                      <path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.521 17.34c-.24.37-.73.49-1.1.25-3.01-1.84-6.8-2.26-11.26-1.24-.42.1-.84-.16-.94-.58-.1-.42.16-.84.58-.94 4.88-1.12 9.07-.64 12.47 1.41.37.24.49.73.25 1.1zm1.48-3.29c-.3.46-.91.61-1.37.31-3.44-2.12-8.68-2.73-12.75-1.5-.52.16-1.07-.14-1.23-.66-.16-.52.14-1.07.66-1.23 4.63-1.4 10.4-.73 14.38 1.71.46.3.61.91.31 1.37zm.14-3.42c-4.13-2.45-10.96-2.68-14.9-1.48-.63.19-1.3-.17-1.49-.8-.19-.63.17-1.3.8-1.49 4.51-1.37 12.06-1.11 16.8 1.7.57.34.76 1.08.42 1.65-.34.57-1.08.76-1.65.42z"/>
+                    </svg>
+                    <span>Spotify</span>
+                  </a>
 
-                <a
-                  href={ytMusicUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center gap-1.5 text-white/80 hover:text-white transition-colors"
-                >
-                  <svg className="w-3.5 h-3.5 text-red-500" viewBox="0 0 24 24" fill="currentColor">
-                    <path d="M12 0C5.376 0 0 5.376 0 12s5.376 12 12 12 12-5.376 12-12S18.624 0 12 0zm0 19c-3.87 0-7-3.13-7-7s3.13-7 7-7 7 3.13 7 7-3.13 7-7 7zm-2.5-10.5v7l6-3.5-6-3.5z"/>
-                  </svg>
-                  <span>YouTube Playlist</span>
-                </a>
+                  <a
+                    href={ytMusicUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center gap-1.5 text-white/80 hover:text-white transition-colors"
+                  >
+                    <svg className="w-3.5 h-3.5 text-red-500" viewBox="0 0 24 24" fill="currentColor">
+                      <path d="M12 0C5.376 0 0 5.376 0 12s5.376 12 12 12 12-5.376 12-12S18.624 0 12 0zm0 19c-3.87 0-7-3.13-7-7s3.13-7 7-7 7 3.13 7 7-3.13 7-7 7zm-2.5-10.5v7l6-3.5-6-3.5z"/>
+                    </svg>
+                    <span>YouTube</span>
+                  </a>
+
+                  <a
+                    href="https://github.com/anshvermadev/Gaano-Ka-Adda"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center gap-1.5 text-white/80 hover:text-white transition-colors"
+                  >
+                    <FaGithub className="w-3.5 h-3.5 text-white" />
+                    <span>GitHub</span>
+                  </a>
+                </div>
+
+                <div className="flex items-center justify-center pt-2 border-t border-white/10 text-xs text-white/60">
+                  <span>Made with ❤️ by <a href="https://github.com/anshvermadev" target="_blank" rel="noopener noreferrer" className="text-white font-medium hover:underline underline-offset-2">Ansh Verma</a></span>
+                </div>
               </div>
             </motion.div>
           </>

@@ -1,0 +1,72 @@
+{
+  "name": "गानों का अड्डा (Gaano Ka Adda) - Indian Music Hangout",
+  "short_name": "गानों का अड्डा",
+  "description": "Immersive scenic Indian audio experiences across 7 eras: 90s Village Nostalgia, 2000s Bollywood Romance, Highway Truck Vibes, Action Cinema, Late Night Road Trips, Bollywood Lo-Fi, and Phonk.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#0d0714",
+  "theme_color": "#12180e",
+  "categories": ["music", "entertainment"],
+  "lang": "hi-IN",
+  "dir": "ltr",
+  "icons": [
+    {
+      "src": "/favicon.ico",
+      "sizes": "16x16 32x32 48x48 64x64",
+      "type": "image/x-icon",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/bg-desktop.webp",
+      "sizes": "1920x1080",
+      "type": "image/webp",
+      "purpose": "any"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "ट्रैक्टर वाला (90s Village)",
+      "short_name": "ट्रैक्टर वाला",
+      "url": "/",
+      "description": "90s Village Nostalgia & Retro Radio"
+    },
+    {
+      "name": "सदाबहार 2000s (Romance)",
+      "short_name": "सदाबहार 2000s",
+      "url": "/2000s",
+      "description": "2000s Bollywood Romance Classics"
+    },
+    {
+      "name": "ट्रक वाला (Highway)",
+      "short_name": "ट्रक वाला",
+      "url": "/truck",
+      "description": "Highway Truck Express Anthems"
+    },
+    {
+      "name": "धुरंधर (Action Cinema)",
+      "short_name": "धुरंधर",
+      "url": "/dhurandhar",
+      "description": "Action Cinema Soundtrack by Shashwat Sachdev"
+    },
+    {
+      "name": "लॉन्ग ड्राइव (Road Trip)",
+      "short_name": "लॉन्ग ड्राइव",
+      "url": "/long-drive",
+      "description": "Late Night Road Trip Anthems"
+    },
+    {
+      "name": "लो-फाई लव (Bollywood Lofi)",
+      "short_name": "लो-फाई लव",
+      "url": "/lofi",
+      "description": "Slowed & Reverb Bollywood Love Songs"
+    },
+    {
+      "name": "PHONK / FUNK",
+      "short_name": "PHONK",
+      "url": "/phonk",
+      "description": "Brazilian Phonk & Drift Beats"
+    }
+  ]
+}

@@ -13,7 +13,6 @@
 - **Phase 5: लॉन्ग ड्राइव (Late Night Road Trip - `/long-drive`)** - 52 classic road trip and late-night highway anthems (Ilahi, Iktara, Dil Dhadakne Do, Ik Junoon, Dil Chahta Hai, Amplifier) with responsive WebP mobile/desktop scenes, midnight neon light streak effects, rotating road trip memories, and "on the road" live presence badge.
 - **Phase 6: लो-फाई लव (Bollywood Lofi Romance - `/lofi`)** - 30 soul-soothing slowed & reverb Bollywood love songs (Tera Chehra, Hawayein, Ishq Sufiyana, Samjhawan, Sanam Re, Galliyan) with dreamy pastel mobile & desktop anime scenes, floating cherry blossom petals, rotating lofi quotes, and "in lofi mood" live badge.
 - **Phase 7: PHONK / FUNK (Brazilian Phonk & Drift Beats - `/phonk`)** - 23 high-voltage viral Brazilian Phonk & drift funk anthems (LUZ ROJA, Montagem Vozes Talentinho, FUNK CRIMINAL, GOZALO, Montagem Bailão, Dia De Fiesta, Revenge) with dark neon drift mobile & desktop anime scenes, neon electric drift flare particles, and "drifting now" live badge.
-- **Future Phases**: Additional themed hangouts (Train Journeys, Monsoon Terraces, Chai Dhaba).
 
 ---
 
@@ -24,7 +23,7 @@
 - **Styling**: Tailwind CSS & Vanilla CSS
 - **Animations**: Framer Motion & Canvas Particle Engine
 - **Audio & Media**: YouTube IFrame API Controller & Web Audio API Synth Engine
-- **State & Realtime**: React Hooks & BroadcastChannel Active Tab Presence
+- **State & Realtime**: React Hooks & Organic Active Presence Engine
 
 ---
 

@@ -173,7 +173,7 @@ export const SONGS_PHONK: Song[] = [
 export const NOSTALGIC_QUOTES_PHONK: string[] = [
   "Heavy 808s, burning rubber, and late night speed.",
   "When the phonk kicks in, there is no stopping.",
-  "No brakes, pure adrenaline — Tokyo drift mode on.",
+  "No brakes, pure adrenaline - Tokyo drift mode on.",
   "Distorted bass, neon lights, and asphalt dreams.",
   "Brazilian funk rhythm with high-voltage energy.",
   "Empty midnight roads and unstoppable 808 drops."

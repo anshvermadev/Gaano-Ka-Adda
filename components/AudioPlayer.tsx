@@ -132,13 +132,21 @@ export default function AudioPlayer({
       {/* Main Track Info & Slider */}
       <div className="flex flex-col min-w-0 flex-1 justify-center gap-1">
         <div className="flex items-center justify-between gap-2">
-          <div className="flex flex-col min-w-0">
-            <h3 className="text-xs sm:text-sm font-semibold text-white truncate max-w-[130px] sm:max-w-[180px]">
+          {/* Song Title & Artist with Full Name Tooltip */}
+          <div className="relative group/info flex flex-col min-w-0 cursor-default">
+            <h3 className="text-xs sm:text-sm font-semibold text-white truncate max-w-[140px] sm:max-w-[200px] md:max-w-[240px] transition-colors group-hover/info:text-emerald-300">
               {currentSong?.title}
             </h3>
-            <p className="text-[10px] sm:text-xs text-white/70 truncate max-w-[130px] sm:max-w-[180px]">
+            <p className="text-[10px] sm:text-xs text-white/70 truncate max-w-[140px] sm:max-w-[200px] md:max-w-[240px]">
               {currentSong?.artist}
             </p>
+
+            {/* Full Song Details Glass Tooltip */}
+            <div className="pointer-events-none absolute -top-16 left-0 px-3.5 py-2 rounded-2xl bg-neutral-950/95 backdrop-blur-2xl border border-white/25 text-xs text-white shadow-[0_12px_32px_rgba(0,0,0,0.85)] opacity-0 group-hover/info:opacity-100 transition-all duration-200 translate-y-0 group-hover/info:-translate-y-1 scale-95 group-hover/info:scale-100 z-50 min-w-[200px] max-w-[320px] whitespace-normal">
+              <div className="font-bold text-white leading-tight mb-0.5">{currentSong?.title}</div>
+              <div className="text-[11px] text-white/70 leading-tight">{currentSong?.artist}</div>
+              <div className="absolute -bottom-1 left-6 w-2 h-2 rotate-45 bg-neutral-950/95 border-r border-b border-white/25" />
+            </div>
           </div>
 
           <div className="text-[10px] sm:text-[11px] text-white/60 font-mono tracking-tight shrink-0">

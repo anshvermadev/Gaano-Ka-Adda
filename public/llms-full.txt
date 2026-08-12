@@ -1,0 +1,58 @@
+# Gaano Ka Adda (गानों का अड्डा) - Complete System & Content Documentation
+
+> Gaano Ka Adda is a scenic, multi-era Indian audio platform featuring 7 distinct musical worlds with interactive ambient animations, continuous background YouTube audio playback, and organic active presence indicators.
+
+---
+
+## 1. Complete Experience Modules Catalog
+
+### Module 1: ट्रैक्टर वाला (Tractor Waala)
+- Route: `/`
+- Track Count: 54 Songs
+- Genre: 90s Indian Village Nostalgia, Bollywood Golden Classics, Rural Folk & Synth Melodies
+- Features: Retro radio player styling, village sunrise background visual (`bg-desktop.webp` / `bg-mobile.webp`), interactive tractor rev sound engine, and atmospheric exhaust smoke particle canvas.
+
+### Module 2: सदाबहार 2000s (Bollywood Romance Classics)
+- Route: `/2000s`
+- Track Count: 69 Songs
+- Genre: 90s to 2000s Bollywood Romance (DDLJ, Kuch Kuch Hota Hai, Mohabbatein, Veer-Zaara, Jab We Met, Kal Ho Naa Ho, Fanaa)
+- Features: Falling rose petals particle simulation, rotating nostalgic love quotes, and searchable playlist drawer.
+
+### Module 3: ट्रक वाला (Highway Road Trip Express)
+- Route: `/truck`
+- Track Count: 54 Songs
+- Genre: Highway Truck Anthems, Classic Dhaba Hits, High-Energy Punjabi & Bollywood Folk
+- Features: Dynamic background video (`bg.mp4`), interactive "हॉर्न ओके प्लीज" horn audio effect (`horn.mp3`), and authentic highway truck shayari.
+
+### Module 4: धुरंधर (Action Cinema Soundtrack)
+- Route: `/dhurandhar`
+- Track Count: 29 Songs
+- Genre: High-Octane Action Cinema Score & Soundtrack by Shashwat Sachdev (Dhurandhar Part 1 & 2)
+- Features: Fiery ember particle engine, split left-right desktop layout preserving character artwork, and rotating iconic action dialogue quotes with tooltips.
+
+### Module 5: लॉन्ग ड्राइव (Late Night Road Trip Anthems)
+- Route: `/long-drive`
+- Track Count: 52 Songs
+- Genre: Late Night Driving Anthems (Ilahi, Iktara, Dil Dhadakne Do, Ik Junoon, Dil Chahta Hai, Amplifier)
+- Features: Midnight neon cyan light streak particle engine, responsive desktop/mobile scenery (`bg-longdrive-desktop.webp` / `bg-longdrive-mobile.webp`), and "on the road" live presence indicator.
+
+### Module 6: लो-फाई लव (Bollywood Lofi Love Songs)
+- Route: `/lofi`
+- Track Count: 30 Songs
+- Genre: Slowed & Reverb Bollywood Love Hits (Tera Chehra, Hawayein, Ishq Sufiyana, Samjhawan, Sanam Re, Galliyan)
+- Features: Pastel anime aesthetic (`bg-lofi-desktop.webp` / `bg-lofi-mobile.webp`), floating cherry blossom petals canvas engine, and rotating lofi thoughts.
+
+### Module 7: PHONK / FUNK (Brazilian Phonk & Drift Beats)
+- Route: `/phonk`
+- Track Count: 23 Songs
+- Genre: Brazilian Phonk, Drift Funk, Bass Boosted TikTok Anthems (LUZ ROJA, Montagem Vozes Talentinho, FUNK CRIMINAL, GOZALO, Montagem Bailão, Dia De Fiesta, Revenge)
+- Features: Dark neon anime drift visual (`bg-phonk-desktop.webp` / `bg-phonk-mobile.webp`), neon electric crimson flare particles, above-player mobile typography, and English drift quote rotation.
+
+---
+
+## 2. Key Architecture & Features
+
+- Background Audio Continuity: Web Audio API integration + MediaSession API for lock-screen media controls and seamless audio across tab switches.
+- Organic Live Presence: Simulated realistic listener count fluctuating naturally between 15 and 25 active listeners with era-specific labels.
+- Responsive Navigation: Single unified root layout, responsive desktop centered dock, and clean mobile drawer displaying all 7 eras with generous padding and zero text cropping.
+- Apache Server Configuration: Optimized `.htaccess` with GZIP compression, 1-year immutable caching for static assets, and security headers.
