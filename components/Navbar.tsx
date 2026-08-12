@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useRealtimeListeners } from '../hooks/useRealtimeListeners';
 
-export type Era = '90s' | '2000s' | 'truck' | 'dhurandhar' | 'longdrive' | 'lofi';
+export type Era = '90s' | '2000s' | 'truck' | 'dhurandhar' | 'longdrive' | 'lofi' | 'phonk';
 
 interface NavbarProps {
   currentEra?: Era;
@@ -83,6 +83,16 @@ export const NAV_ITEMS: NavItem[] = [
     activeText: 'text-purple-300 font-semibold',
     activeBg: 'bg-purple-500/25 shadow-[0_0_16px_rgba(168,85,247,0.25)]',
   },
+  {
+    id: 'phonk',
+    label: 'PHONK / FUNK',
+    subtitle: 'Brazilian Phonk & Drift Beats',
+    href: '/phonk',
+    trackCount: '23 Songs',
+    activeBorder: 'border-red-400/60',
+    activeText: 'text-red-300 font-semibold',
+    activeBg: 'bg-red-500/25 shadow-[0_0_16px_rgba(239,68,68,0.3)]',
+  },
 ];
 
 export default function Navbar({ currentEra = '90s' }: NavbarProps): React.JSX.Element {
@@ -120,7 +130,9 @@ export default function Navbar({ currentEra = '90s' }: NavbarProps): React.JSX.E
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, []);
 
-  const ytMusicUrl = currentEra === 'lofi'
+  const ytMusicUrl = currentEra === 'phonk'
+    ? "https://www.youtube.com/watch?v=cXhM_5M4l1g&list=RDEMA1BN7MZ0oJgGs9-KXueRKA"
+    : currentEra === 'lofi'
     ? "https://www.youtube.com/playlist?list=PLi-epCWqWTgKjhTGZVkmN3OLBRQG2mt2W"
     : currentEra === 'longdrive'
     ? "https://www.youtube.com/playlist?list=PL2n9PsUx_VHcVgOATXGVFFP9IXjYO6wMY"
@@ -132,7 +144,9 @@ export default function Navbar({ currentEra = '90s' }: NavbarProps): React.JSX.E
     ? "https://www.youtube.com/playlist?list=PLAFjPVdERAkt7jNU1XW7EWXHLyYyf7Sux"
     : "https://music.youtube.com/playlist?list=PL--o-tfjAs5J7M5M5obyQPpmFnPi1a_Ev";
     
-  const spotifyUrl = currentEra === 'lofi'
+  const spotifyUrl = currentEra === 'phonk'
+    ? "https://open.spotify.com/search/brazilian%20phonk%20drift"
+    : currentEra === 'lofi'
     ? "https://open.spotify.com/search/bollywood%20lofi%20slowed%20reverb"
     : currentEra === 'longdrive'
     ? "https://open.spotify.com/search/bollywood%20long%20drive%20hits"
@@ -146,6 +160,7 @@ export default function Navbar({ currentEra = '90s' }: NavbarProps): React.JSX.E
 
   const getPresenceText = () => {
     switch (currentEra) {
+      case 'phonk': return 'drifting now';
       case 'lofi': return 'in lofi mood';
       case 'longdrive': return 'on the road';
       case 'truck': return 'on the highway';
@@ -156,6 +171,7 @@ export default function Navbar({ currentEra = '90s' }: NavbarProps): React.JSX.E
 
   const getPresenceTooltip = () => {
     switch (currentEra) {
+      case 'phonk': return 'Drift Phonk Listeners';
       case 'lofi': return 'Listeners in Lofi Mood';
       case 'longdrive': return 'Road Trippers on the Road';
       case 'truck': return 'Drivers on the Highway';
@@ -166,6 +182,7 @@ export default function Navbar({ currentEra = '90s' }: NavbarProps): React.JSX.E
 
   const getBadgeGlowColor = () => {
     switch (currentEra) {
+      case 'phonk': return 'bg-red-500 shadow-[0_0_8px_#ef4444]';
       case 'lofi': return 'bg-purple-500 shadow-[0_0_8px_#a855f7]';
       case 'longdrive': return 'bg-cyan-500 shadow-[0_0_8px_#06b6d4]';
       case 'dhurandhar': return 'bg-orange-500 shadow-[0_0_8px_#f97316]';
@@ -176,6 +193,7 @@ export default function Navbar({ currentEra = '90s' }: NavbarProps): React.JSX.E
 
   const getBadgePingColor = () => {
     switch (currentEra) {
+      case 'phonk': return 'bg-red-400';
       case 'lofi': return 'bg-purple-400';
       case 'longdrive': return 'bg-cyan-400';
       case 'dhurandhar': return 'bg-orange-400';
@@ -186,6 +204,7 @@ export default function Navbar({ currentEra = '90s' }: NavbarProps): React.JSX.E
 
   const getBadgeTextColor = () => {
     switch (currentEra) {
+      case 'phonk': return 'text-red-300';
       case 'lofi': return 'text-purple-300';
       case 'longdrive': return 'text-cyan-300';
       case 'dhurandhar': return 'text-orange-300';
@@ -241,7 +260,7 @@ export default function Navbar({ currentEra = '90s' }: NavbarProps): React.JSX.E
                 <Link
                   key={item.id}
                   href={item.href}
-                  className={`relative px-2.5 sm:px-3.5 py-1 sm:py-1.5 rounded-full text-xs sm:text-sm font-devanagari transition-all duration-200 cursor-pointer select-none whitespace-nowrap ${
+                  className={`relative px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-full text-xs font-devanagari transition-all duration-200 cursor-pointer select-none whitespace-nowrap ${
                     isActive
                       ? `${item.activeText} ${item.activeBg} border ${item.activeBorder}`
                       : 'text-white/70 hover:text-white hover:bg-white/10'
