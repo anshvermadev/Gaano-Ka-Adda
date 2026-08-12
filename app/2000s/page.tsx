@@ -227,7 +227,7 @@ export default function Page2000s(): React.JSX.Element {
       />
 
       {/* Ambient Particle & Aesthetic Engine */}
-      <AmbientAtmosphere isTractorRevving={false} />
+      <AmbientAtmosphere era="2000s" />
 
       {/* Global Header with Era Navigation */}
       <Header currentEra="2000s" />

@@ -246,7 +246,7 @@ export default function Home(): React.JSX.Element {
 
   return (
     <main className="relative w-full h-screen overflow-hidden bg-[#12180e] select-none">
-      <AmbientAtmosphere isTractorRevving={isTractorRevving} />
+      <AmbientAtmosphere isTractorRevving={isTractorRevving} era="90s" />
 
       <YouTubePlayerController
         videoId={currentSong.videoId}

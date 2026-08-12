@@ -70,6 +70,20 @@ export default function HeroBanner({ onTractorClick, isTractorRevving }: HeroBan
         </div>
       </div>
 
+      {/* Bottom Single-line Interactive Rev Hint (No emojis) */}
+      <div className="absolute bottom-24 sm:bottom-6 left-4 sm:left-10 z-20 pointer-events-auto">
+        <motion.button
+          type="button"
+          onClick={onTractorClick}
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.3, duration: 0.5 }}
+          className="px-3.5 py-1.5 rounded-full bg-black/45 hover:bg-black/70 backdrop-blur-md border border-white/20 hover:border-amber-400/50 text-[11px] sm:text-xs text-amber-200/90 hover:text-amber-200 tracking-wide transition-all shadow-lg active:scale-95 cursor-pointer whitespace-nowrap"
+        >
+          Click tractor or press T to rev
+        </motion.button>
+      </div>
+
       {/* Interactive Tractor Hotspots (Mobile & Desktop) */}
       {/* Desktop click zone */}
       <div

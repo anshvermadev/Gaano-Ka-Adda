@@ -20,18 +20,18 @@ export default function HeroBanner2000s(): React.JSX.Element {
       <div className="absolute inset-0 z-0 pointer-events-none">
         {/* Mobile Vertical Background */}
         <img
-          src="/bg-mobile.png"
-          alt="90s-2000s Bollywood Romance Scene"
+          src="/bg-2000s-mobile.png"
+          alt="2000s Bollywood Romance Scene - Mobile"
           className="block sm:hidden w-full h-full object-cover object-center filter saturate-[1.1] contrast-[1.05] brightness-90"
         />
 
         {/* Desktop Landscape Background */}
         <img
-          src="/bg-desktop.png"
-          alt="90s-2000s Bollywood Romance Scene"
+          src="/bg-2000s-desktop.png"
+          alt="2000s Bollywood Romance Scene - Desktop"
           className="hidden sm:block w-full h-full object-cover object-center filter saturate-[1.1] contrast-[1.05] brightness-90"
         />
-        
+
         {/* Romantic Filmic Overlays & Amber-Rose Tint */}
         <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-purple-950/20 to-black/60 pointer-events-none" />
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_35%,rgba(255,180,160,0.1)_0%,rgba(20,10,25,0.25)_70%,rgba(10,5,15,0.55)_100%)] pointer-events-none" />
