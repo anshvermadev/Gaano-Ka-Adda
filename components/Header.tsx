@@ -6,7 +6,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { useRealtimeListeners } from '../hooks/useRealtimeListeners';
 
 interface HeaderProps {
-  currentEra?: '90s' | '2000s';
+  currentEra?: '90s' | '2000s' | 'truck';
 }
 
 export default function Header({ currentEra = '90s' }: HeaderProps): React.JSX.Element {
@@ -32,11 +32,15 @@ export default function Header({ currentEra = '90s' }: HeaderProps): React.JSX.E
     return () => clearInterval(interval);
   }, []);
 
-  const ytMusicUrl = currentEra === '2000s' 
+  const ytMusicUrl = currentEra === 'truck'
+    ? "https://music.youtube.com/playlist?list=PLeatb7hupNV_AWUl_7ttbsKeCQh8tF5N4"
+    : currentEra === '2000s'
     ? "https://www.youtube.com/playlist?list=PLAFjPVdERAkt7jNU1XW7EWXHLyYyf7Sux"
     : "https://music.youtube.com/playlist?list=PL--o-tfjAs5J7M5M5obyQPpmFnPi1a_Ev";
     
-  const spotifyUrl = currentEra === '2000s'
+  const spotifyUrl = currentEra === 'truck'
+    ? "https://open.spotify.com/search/90s%20hindi%20highway%20truck%20hits"
+    : currentEra === '2000s'
     ? "https://open.spotify.com/search/2000s%20bollywood%20romance%20hits"
     : "https://open.spotify.com/search/90s%20hindi%20nostalgia%20hits";
 
@@ -81,6 +85,16 @@ export default function Header({ currentEra = '90s' }: HeaderProps): React.JSX.E
           >
             2000s रोमांस
           </Link>
+          <Link
+            href="/truck"
+            className={`px-3 py-1 rounded-full transition-all duration-200 ${
+              currentEra === 'truck'
+                ? 'bg-amber-500/30 text-amber-300 font-semibold border border-amber-400/40 shadow-sm'
+                : 'text-white/60 hover:text-white hover:bg-white/10'
+            }`}
+          >
+            🚛 ट्रक वाला
+          </Link>
         </div>
       </motion.div>
 
@@ -110,12 +124,12 @@ export default function Header({ currentEra = '90s' }: HeaderProps): React.JSX.E
                   {mounted ? onlineCount : 1}
                 </motion.span>
               </AnimatePresence>
-              <span>online</span>
+              <span>{currentEra === 'truck' ? 'on the highway' : 'online'}</span>
             </div>
           </div>
 
           <div className="pointer-events-none absolute -bottom-10 left-1/2 -translate-x-1/2 px-3 py-1 rounded-xl bg-neutral-900/95 backdrop-blur-xl border border-white/25 text-xs font-medium text-white tracking-wide whitespace-nowrap shadow-[0_8px_20px_rgba(0,0,0,0.7)] opacity-0 group-hover/online:opacity-100 transition-all duration-200 translate-y-0 group-hover/online:translate-y-1 scale-95 group-hover/online:scale-100 z-50">
-            Active Listeners
+            {currentEra === 'truck' ? 'Drivers on the Highway' : 'Active Listeners'}
             <div className="absolute -top-1 left-1/2 -translate-x-1/2 w-2 h-2 rotate-45 bg-neutral-900/95 border-l border-t border-white/25" />
           </div>
         </div>
@@ -145,6 +159,14 @@ export default function Header({ currentEra = '90s' }: HeaderProps): React.JSX.E
             }`}
           >
             2000s
+          </Link>
+          <Link
+            href="/truck"
+            className={`px-2 py-0.5 rounded-full transition-all ${
+              currentEra === 'truck' ? 'bg-amber-500/30 text-amber-300 font-semibold' : 'text-white/60'
+            }`}
+          >
+            🚛
           </Link>
         </div>
 
