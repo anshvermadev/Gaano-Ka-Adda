@@ -38,10 +38,10 @@ export const metadata: Metadata = {
     type: 'website',
     images: [
       {
-        url: '/image.png',
+        url: 'https://res.cloudinary.com/da54ofjz1/image/upload/v1786535858/nfkj2kp5gibdytpdlfxg.jpg',
         width: 1200,
         height: 630,
-        alt: 'Gaano Ka Adda - Immersive Indian Audio Experiences',
+        alt: 'गानों का अड्डा (Gaano Ka Adda) - Immersive Indian Audio Experiences',
       },
     ],
   },
@@ -50,7 +50,7 @@ export const metadata: Metadata = {
     title: 'गानों का अड्डा (Gaano Ka Adda) - Immersive Indian Audio Experiences',
     description:
       'The ultimate Indian music hangout spot across 7 musical eras - 90s village nostalgia, classic golden hits, and ambient vibes.',
-    images: ['/image.png'],
+    images: ['https://res.cloudinary.com/da54ofjz1/image/upload/v1786535858/nfkj2kp5gibdytpdlfxg.jpg'],
   },
   robots: {
     index: true,
